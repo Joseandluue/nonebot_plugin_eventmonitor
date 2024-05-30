@@ -152,10 +152,13 @@ async def handle_first_receive(event: GroupUploadNoticeEvent):
 
 #退群事件
 @del_user.handle()
-async def user_bye(event: GroupDecreaseNoticeEvent):
+async def user_bye(event: GroupDecreaseNoticeEvent, bot: Bot):
     if not (await check_del_user(g_temp, str(event.group_id))):
         return
-    rely_msg = await  del_user_bye(event.time, event.user_id)
+    user_id_data = await bot.get_stranger_info(user_id=event.user_id)
+    qname = user_id_data['nick']
+    rely_msg = await  del_user_bye(event.time, event.user_id, qname)
+    print(rely_msg)
     await del_user.finish(message=Message(rely_msg))
 
 #入群事件
@@ -165,7 +168,9 @@ async def user_welcome(event: GroupIncreaseNoticeEvent, bot: Bot):
     if not (await check_add_user(g_temp, str(event.group_id))):
         return
     bot_qq = int(bot.self_id)
-    rely_msg = await  add_user_wecome(event.time, event.user_id, bot_qq)
+    user_id_data = await bot.get_group_member_info(group_id=event.group_id, user_id=event.user_id)
+    qname = user_id_data['card'] if user_id_data['card'] else user_id_data['nickname']
+    rely_msg = await  add_user_wecome(event.time, event.user_id, bot_qq, qname)
     await add_user.finish(message=Message(rely_msg))
 
 #管理员变动

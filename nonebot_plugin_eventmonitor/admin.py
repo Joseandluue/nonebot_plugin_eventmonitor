@@ -24,23 +24,23 @@ async def admin_changer(sub_type, user_id, bot_qq) :
     return admin_msg
 
 
-async def del_user_bye(add_time, user_id):
+async def del_user_bye(add_time, user_id, qname):
     global del_user_msg
     del_time = datetime.fromtimestamp(add_time)
     
     # 检查用户ID是否在超级用户列表superusers中
     if user_id in superusers:
         # 如果是超级用户，生成特定的离开消息
-        del_user_msg = f"⌈{del_time}⌋\n@{user_id}恭送主人离开喵~"
+        del_user_msg = f"⌈{del_time}⌋\n{qname}[{user_id}]恭送主人离开喵~"
     else:
         # 如果不是超级用户，生成通用的离开消息，包含用户的QQ号和头像图片
-        del_user_msg = f"✈️ 成员变动 ✈️ \n时间: ⌈{del_time}⌋\nQQ号为：{user_id}的小可爱退群喵~" \
+        del_user_msg = f"✈️ 成员变动 ✈️ \n时间: ⌈{del_time}⌋\n{qname}[{user_id}]退群喵~" \
                        f"[CQ:image,file=https://q4.qlogo.cn/headimg_dl?dst_uin={user_id}&spec=640]"
                        
-        return del_user_msg
+    return del_user_msg
 
 
-async def add_user_wecome(add_time, user_id, bot_qq):
+async def add_user_wecome(add_time, user_id, bot_qq, qname):
     global groups_all, add_user_msg   
     # 将时间戳转换为datetime类型的时间add_time
     add_time = datetime.fromtimestamp(add_time) 
@@ -52,10 +52,10 @@ async def add_user_wecome(add_time, user_id, bot_qq):
     # 判断用户ID是否在超级用户列表superusers中
     elif user_id in superusers:
         # 如果是超级用户加入群组，生成特定的欢迎消息，包含用户ID和CQ表情
-        add_user_msg = f"✨ 成员变动 ✨\n@{user_id}欢迎主人进群喵~[CQ:face,id=175]"
+        add_user_msg = f"✨ 成员变动 ✨\n{qname}[{user_id}]欢迎主人进群喵~[CQ:face,id=175]"
     else:
         # 如果是普通用户加入群组，生成通用的欢迎消息，包含用户ID、加入时间和用户头像图片的链接
-        add_user_msg = f"✨ 成员变动 ✨\n欢迎@{user_id}的加入喵~\n加入时间：⌈{add_time}⌋，请在群内积极发言喵~" \
+        add_user_msg = f"✨ 成员变动 ✨\n{qname} [{user_id}]欢迎加入喵~\n加入时间：⌈{add_time}⌋，请在群内积极发言喵~" \
                        f"[CQ:image,file=https://q4.qlogo.cn/headimg_dl?dst_uin={user_id}&spec=640]"
     return add_user_msg
 

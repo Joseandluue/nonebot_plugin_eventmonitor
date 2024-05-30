@@ -2,7 +2,8 @@ import os
 import nonebot
 import json
 from pathlib import Path
-from typing import Optional
+from typing import Optional, TypedDict, Dict, List
+from pydantic import BaseModel
 
 g_temp = {}
 chuo_CD_dir = {}
@@ -84,6 +85,20 @@ async def config_check():
     # 将更新后的配置字典上传到配置文件中
     json_upload(address, config_dict)
 
+class member_data(BaseModel):
+    user_id: int
+    nickname: str
+    card: str
+
+memberindex = Dict[str, member_data]
+
+class member_index(TypedDict):
+    group: memberindex
+
+class get_data:
+    mm_dict: member_index = {
+        'group':{}
+    }
 
 def json_load(path) -> Optional[dict]:
     """
